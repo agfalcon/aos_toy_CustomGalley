@@ -10,11 +10,13 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AlertDialog
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import kgb.plum.customgallery.databinding.ActivityMainBinding
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
+    private lateinit var imageAdapter: ImageAdapter
     private val imageLoadLauncher = registerForActivityResult(ActivityResultContracts.GetMultipleContents()){
         uriList ->
         updateImages(uriList)
@@ -26,6 +28,20 @@ class MainActivity : AppCompatActivity() {
 
         binding.loadImageButton.setOnClickListener {
             checkPermission()
+        }
+
+        initRecyclerView()
+    }
+
+    private fun initRecyclerView(){
+        imageAdapter = ImageAdapter(object : ImageAdapter.ItemClickListener{
+            override fun onLoadMorClick() {
+                checkPermission()
+            }
+        })
+        binding.imageRecyclerView.apply {
+            adapter = imageAdapter
+            layoutManager = GridLayoutManager(context, 3)
         }
     }
 
@@ -83,6 +99,11 @@ class MainActivity : AppCompatActivity() {
 
     private fun updateImages(uriList: List<Uri>){
         Log.i("테스트", uriList.toString())
+        val images = uriList.map {ImageItems.Image(it)}
+        val updatedImages = imageAdapter.currentList.toMutableList().apply{
+            addAll(images)
+        }
+        imageAdapter.submitList(updatedImages)
     }
 
 
