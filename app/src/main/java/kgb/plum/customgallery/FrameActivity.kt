@@ -3,6 +3,7 @@ package kgb.plum.customgallery
 import android.net.Uri
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import com.google.android.material.tabs.TabLayoutMediator
 import kgb.plum.customgallery.databinding.ActivityFrameBinding
 
 class FrameActivity : AppCompatActivity() {
@@ -18,5 +19,13 @@ class FrameActivity : AppCompatActivity() {
         frameAdapter = FrameAdapter(images)
 
         binding.viewPager.adapter = frameAdapter
+
+        TabLayoutMediator(
+            binding.tabLayout,
+            binding.viewPager
+        ){
+            tab, position ->
+            binding.viewPager.currentItem = tab.position
+        }.attach()
     }
 }

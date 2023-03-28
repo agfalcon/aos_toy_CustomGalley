@@ -27,6 +27,12 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
+        binding.toolbar.apply {
+            title = "사진 가져오기"
+            setSupportActionBar(this)
+        }
+
+
         binding.loadImageButton.setOnClickListener {
             checkPermission()
         }
