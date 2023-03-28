@@ -64,6 +64,23 @@ class MainActivity : AppCompatActivity() {
         )
     }
 
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when(requestCode){
+            REQUEST_READ_EXTERNAL_STORAGE -> {
+                val resultCode = grantResults.firstOrNull() ?: PackageManager.PERMISSION_DENIED
+                if(resultCode == PackageManager.PERMISSION_GRANTED){
+                    loadImage()
+                }
+            }
+        }
+
+    }
+
     private fun updateImages(uriList: List<Uri>){
         Log.i("테스트", uriList.toString())
     }
